@@ -15,8 +15,8 @@ class VegetableController extends Controller
         if(is_null($request->input("keresett"))){
             return view("vegetable.table", ["title"=>"Zöldségek táblázatban", "vegetables"=>$this->loadVegetables()]);
         }
-        $filtered = $this->loadVegetables()->filter(function($value, $key){
-            str_contains($value["name"], $request->input("keresett"));
+        $filtered = $this->loadVegetables()->filter(function($value, $key) use ($request){
+            return str_contains($value["name"], strtolower($request->input("keresett")));
         });
         return view("vegetable.table", ["title"=>"Zöldségek táblázatban", "vegetables"=>$filtered]);
     }
