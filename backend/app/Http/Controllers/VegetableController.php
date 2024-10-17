@@ -22,10 +22,8 @@ class VegetableController extends Controller
     }
 
     public function show(int $id){
-        $selected = $this->loadVegetables()->first(function($value, $key){
-            $value["id"] == $id;
-        });
-        return view("vegetable.show", ["title"=>$selected["name"], "vegetables"=>$selected]);
+        $selected = $this->loadVegetables()->where("id", $id)->first();
+        return view("vegetable.show", ["title"=>$selected["name"], "vegetable"=>$selected]);
     }
 
     public function loadVegetables(): Collection{
