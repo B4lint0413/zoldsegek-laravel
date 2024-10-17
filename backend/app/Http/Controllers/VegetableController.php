@@ -8,24 +8,24 @@ use Illuminate\Support\Collection;
 class VegetableController extends Controller
 {
     public function index(){
-        return view("vegetable.index", ["title"=> "Zöldségek", "vegetables" => loadVegetables()])
+        return view("vegetable.index", ["title"=> "Zöldségek", "vegetables" => $this->loadVegetables()]);
     }    
 
     public function table(Request $request){
         if(is_null($request->input("keresett"))){
-            return view("vegetable.table", ["title"=>"Zöldségek táblázatban", "vegetables"=>loadVegetables()]);
+            return view("vegetable.table", ["title"=>"Zöldségek táblázatban", "vegetables"=>$this->loadVegetables()]);
         }
-        $filtered = loadVegetables()->filter(function($value, $key){
+        $filtered = $this->loadVegetables()->filter(function($value, $key){
             str_contains($value["name"], $request->input("keresett"));
         });
         return view("vegetable.table", ["title"=>"Zöldségek táblázatban", "vegetables"=>$filtered]);
     }
 
     public function show(int $id){
-        $selected = loadVegetables()->first(function($value, $key){
+        $selected = $this->loadVegetables()->first(function($value, $key){
             $value["id"] == $id;
         });
-        return view("vegetable.show", "title"=>$selected["name"], "vegetables"=>$selected);
+        return view("vegetable.show", ["title"=>$selected["name"], "vegetables"=>$selected]);
     }
 
     public function loadVegetables(): Collection{
